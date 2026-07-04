@@ -69,11 +69,10 @@ def get_history(id):
         SELECT strftime('%H:%M', timestamp) as t, value 
         FROM history 
         WHERE device_id = ? 
-        AND timestamp > datetime('now', ?, '-1 hour')
+        AND timestamp > datetime('now', ?)
         ORDER BY timestamp ASC
     """
-    # Fix: Correcting the interval logic
-    cursor.execute(query, (id, f'-{offset} hours'))
+    cursor.execute(query, (id, f'-{offset + 1} hours'))
     rows = cursor.fetchall()
     conn.close()
     
@@ -91,8 +90,7 @@ def save_to_db():
         conn = sqlite3.connect(DB_NAME)
         for d_id, node in active_data.items():
             if node["history"]:
-                # FIX: Use .isoformat() to pass a string instead of a datetime object
-                timestamp_str = datetime.now().isoformat() 
+                timestamp_str = node["last_seen"].isoformat()
                 conn.execute(
                     'INSERT INTO history (device_id, timestamp, value) VALUES (?, ?, ?)',
                     (d_id, timestamp_str, node["history"][-1])

@@ -8,14 +8,16 @@ import SummaryCard from './components/SummaryCard';
 import AdvancedStats from './components/AdvancedStats';
 import GlobalInsights from './components/GlobalInsights';
 
-const socket = io('http://localhost:5000');
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000';
+const WS_BASE = import.meta.env.VITE_WS_BASE || 'http://localhost:5000';
+const socket = io(WS_BASE);
 
 // --- Inventory Management (Sync Fixed) ---
 const Manage = () => {
   const [list, setList] = useState([]);
   
   const refresh = useCallback(() => {
-    fetch('http://localhost:5000/api/clients')
+    fetch(`${API_BASE}/api/clients`)
       .then(r => r.json())
       .then(setList)
       .catch(() => setList([]));
@@ -28,7 +30,7 @@ const Manage = () => {
   }, [refresh]);
 
   const remove = (id) => {
-    fetch(`http://localhost:5000/api/clients/${id}`, { method: 'DELETE' }).then(() => refresh());
+    fetch(`${API_BASE}/api/clients/${id}`, { method: 'DELETE' }).then(() => refresh());
   };
 
   return (
@@ -52,7 +54,7 @@ const HourlyAnalysis = ({ id, livePulse }) => {
   const [offset, setOffset] = useState(0);
 
   const fetchHistory = useCallback(() => {
-    fetch(`http://localhost:5000/api/history/${id}?offset=${offset}`)
+    fetch(`${API_BASE}/api/history/${id}?offset=${offset}`)
       .then(res => res.json())
       .then(data => {
         setHistory(data);

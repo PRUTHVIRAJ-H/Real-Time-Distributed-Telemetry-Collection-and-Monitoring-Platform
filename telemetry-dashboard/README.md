@@ -1,16 +1,36 @@
-# React + Vite
+# Telemetry Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This frontend is a React + Vite dashboard for the FleetManager telemetry platform.
+It listens for live UDP telemetry updates from the Python backend and renders real-time node metrics, a device inventory, and historical charts.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+cd telemetry-dashboard
+npm install
+cp .env.example .env
+npm run dev
+```
 
-## React Compiler
+## Environment variables
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The dashboard reads the backend host from environment variables:
 
-## Expanding the ESLint configuration
+- `VITE_API_BASE` — REST API base URL
+- `VITE_WS_BASE` — Socket.IO host URL
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Example:
+
+```env
+VITE_API_BASE=http://localhost:5000
+VITE_WS_BASE=http://localhost:5000
+```
+
+## Notes
+
+- Backend API routes:
+  - `GET /api/clients`
+  - `DELETE /api/clients/:id`
+  - `GET /api/history/:id?offset=0`
+- Live telemetry is delivered using Socket.IO on the same backend host.
+- If the backend is hosted on a different machine, update `.env` or `.env.local` before starting.
