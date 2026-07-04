@@ -105,7 +105,8 @@ FleetPulse/
 │   └── package.json
 │
 ├── simulator/
-│   └── virtual_node.c
+│   └── virtual_nodes/
+|   └── esp32
 │
 ├── docker-compose.yml
 └── README.md
@@ -169,21 +170,7 @@ If current_time - last_seen > 10 seconds
 
 ---
 
-# 📸 Dashboard
 
-## Fleet Overview
-
-<p align="center">
-<img src="docs/dashboard.png" width="90%">
-</p>
-
-## Device Analytics
-
-<p align="center">
-<img src="docs/device-page.png" width="90%">
-</p>
-
----
 
 # 🚀 Quick Start
 
@@ -308,8 +295,5 @@ FleetPulse is designed to support:
 
 ---
 
-# 👨‍💻 Author
-
-**KOTRESH H**
-
 > Building scalable systems one packet at a time 🚀
+> STAR THE REPO IF YOU LIKE IT
