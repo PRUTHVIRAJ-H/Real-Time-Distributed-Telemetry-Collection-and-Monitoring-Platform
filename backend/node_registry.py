@@ -2,7 +2,7 @@ from datetime import datetime
 
 nodes = {}
 
-
+#FOR UPDATING NODE INFORMATION
 def update_node(device_id, seq, value, ip):
     if device_id not in nodes:
         nodes[device_id] = {
@@ -13,7 +13,8 @@ def update_node(device_id, seq, value, ip):
             "last_seen": datetime.now(),
             "history": [],
             "packet_loss": 0,
-            "packets_received": 1
+            "packets_received": 1,
+            "status": "ONLINE"
         }
         return nodes[device_id]
 
@@ -32,6 +33,7 @@ def update_node(device_id, seq, value, ip):
 
     node["last_seq"] = seq
     node["last_seen"] = datetime.now()
+    node["status"] = "ONLINE"
 
     node["history"].append(value)
 
@@ -39,3 +41,19 @@ def update_node(device_id, seq, value, ip):
         node["history"].pop(0)
 
     return node
+
+
+#FOR CHECKING WHETHER THE DEVICE IS ONLINE OR OFFLINE BASED ON LAST SEEN TIME
+OFFLINE_THRESHOLD = 10  # seconds
+
+
+def update_node_status():
+    now = datetime.now()
+
+    for node in nodes.values():
+        elapsed = (now - node["last_seen"]).total_seconds()
+
+        if elapsed > OFFLINE_THRESHOLD:
+            node["status"] = "OFFLINE"
+        else:
+            node["status"] = "ONLINE"
