@@ -3,6 +3,8 @@ from flask_cors import CORS
 from models.node_registry import nodes
 from services.udp_listener import start_udp_listener
 from services.status_monitor import start_status_monitor
+from database.db import init_db
+from database.db import get_connection
 import threading
 
 app = Flask(__name__)
@@ -67,8 +69,66 @@ def get_history(device_id):
 
     return jsonify(result)
 
+@app.route("/api/inventory")
+def inventory():
+
+    conn = get_connection()
+
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT *
+        FROM devices
+        ORDER BY last_seen DESC
+    """)
+
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    devices = []
+
+    for row in rows:
+        devices.append({
+            "device_id": row[0],
+            "ip": row[1],
+            "first_seen": row[2],
+            "last_seen": row[3]
+        })
+
+    return jsonify(devices)
+
+
+@app.route("/api/history/<device_id>")
+def history(device_id):
+
+    conn = get_connection()
+
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT timestamp, value
+        FROM telemetry
+        WHERE device_id = ?
+        ORDER BY timestamp
+    """, (device_id,))
+
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    result = []
+
+    for t, v in rows:
+        result.append({
+            "time": t,
+            "value": v
+        })
+
+    return jsonify(result)
 
 if __name__ == "__main__":
+    init_db()
     threading.Thread(
         target=start_udp_listener,
         daemon=True

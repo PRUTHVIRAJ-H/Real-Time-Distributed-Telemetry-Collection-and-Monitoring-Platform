@@ -1,5 +1,10 @@
 import socket
 from models.node_registry import update_node
+from services.database_service import (
+    save_device,
+    save_telemetry
+)
+
 
 HOST = "0.0.0.0"
 PORT = 4210
@@ -30,5 +35,10 @@ def start_udp_listener():
                 addr[0]
             )
 
+            save_device(node)
+            save_telemetry(
+                node["device_id"],
+                node["current_value"]
+            )
         except Exception as e:
             print("Packet Error:", e)
