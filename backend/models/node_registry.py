@@ -10,8 +10,9 @@ def update_node(device_id, seq, value, ip):
             "ip": ip,
             "current_value": value,
             "last_seq": seq,
+            "first_seen": datetime.now(),
             "last_seen": datetime.now(),
-            "history": [],
+            "history": [value],
             "packet_loss": 0,
             "packets_received": 1,
             "status": "ONLINE"

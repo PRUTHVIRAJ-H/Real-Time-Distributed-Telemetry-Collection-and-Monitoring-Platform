@@ -1,5 +1,5 @@
 import time
-from node_registry import update_node_status
+from models.node_registry import update_node_status
 
 
 def start_status_monitor():

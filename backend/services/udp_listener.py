@@ -1,5 +1,5 @@
 import socket
-from node_registry import update_node
+from models.node_registry import update_node
 
 HOST = "0.0.0.0"
 PORT = 4210

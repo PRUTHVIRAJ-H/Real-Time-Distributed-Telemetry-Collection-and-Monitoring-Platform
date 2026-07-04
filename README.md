@@ -1,19 +1,18 @@
-FleetPulse/
-│
-├── backend/
-│   ├── app.py
-│   ├── udp_listener.py
-│   ├── node_registry.py
-│   ├── database.py
-│   ├── requirements.txt
-│
-├── dashboard/
-│
-├── clients/
-│   ├── esp32/
-│   └── simulator/
-│
-├── docs/
-│
-├── README.md
-└── .gitignore
+src/
+├── api/
+│   └── telemetryApi.js
+├── pages/
+│   ├── DashboardPage.jsx
+│   ├── DevicePage.jsx
+│   └── InventoryPage.jsx
+├── components/
+│   ├── SummaryCards.jsx
+│   ├── DeviceTable.jsx
+│   ├── FleetInsights.jsx
+│   ├── StatusBadge.jsx
+│   └── TelemetryChart.jsx
+├── hooks/
+│   └── useTelemetry.js
+├── App.jsx
+├── main.jsx
+└── index.css
