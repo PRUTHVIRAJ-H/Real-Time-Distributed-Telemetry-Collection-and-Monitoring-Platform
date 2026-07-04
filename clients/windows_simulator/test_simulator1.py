@@ -12,7 +12,7 @@ def client(device_id):
     seq = 0
 
     while True:
-        seq += 1
+        seq += 2
 
         value = random.randint(20, 100)
 
@@ -28,12 +28,6 @@ def client(device_id):
         time.sleep(1)
 
 
-for i in range(50):
-    threading.Thread(
-        target=client,
-        args=(f"SIM_{i}",),
-        daemon=True
-    ).start()
-
 while True:
     time.sleep(1)
+    client("Test1")
